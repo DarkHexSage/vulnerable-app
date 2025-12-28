@@ -31,13 +31,15 @@ This application is a realistic e-commerce platform with **8 intentional securit
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: Docker Compose (Recommended) ⭐
+
+**Fastest way - one command!**
 
 ```bash
 docker-compose up
 ```
 
-Open: **http://localhost:5000**
+That's it! Open: **http://localhost:5000**
 
 ### Option 2: Local Python
 
@@ -50,6 +52,164 @@ python3 app.py
 ```
 
 Open: **http://localhost:5000**
+
+---
+
+## 🐳 Docker Setup Guide
+
+### Prerequisites
+
+- Docker installed
+- Docker Compose installed
+- The `app2-vulnerable/` directory
+
+### Quick Docker Setup (3 Steps)
+
+#### Step 1: Create Dockerfile
+
+In your `app2-vulnerable/` directory, create a file named `Dockerfile`:
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["python3", "app.py"]
+```
+
+#### Step 2: Create docker-compose.yml
+
+In your `app2-vulnerable/` directory, create a file named `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vulnerable-ecommerce
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    volumes:
+      - .:/app
+    command: python3 app.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  default:
+    name: vulnerable-network
+```
+
+#### Step 3: Start Docker Compose
+
+```bash
+cd app2-vulnerable
+docker-compose up
+```
+
+You should see:
+
+```
+🚨 VULNERABLE E-COMMERCE APP
+🌐 Open: http://localhost:5000
+💡 Demo: admin@example.com / admin123
+```
+
+Then open your browser: **http://localhost:5000** 🎉
+
+---
+
+### Docker Compose Commands
+
+```bash
+# Start containers
+docker-compose up
+
+# Start in background
+docker-compose up -d
+
+# Rebuild after code changes
+docker-compose up --build
+
+# View running containers
+docker-compose ps
+
+# View logs
+docker-compose logs -f web
+
+# Stop containers
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v
+
+# Restart service
+docker-compose restart web
+
+# Execute command in container
+docker-compose exec web python3 app.py
+```
+
+---
+
+### Important: Flask Configuration
+
+**Your `app.py` MUST have this at the bottom:**
+
+```python
+if __name__ == '__main__':
+    # ⚠️ host='0.0.0.0' is REQUIRED for Docker!
+    app.run(debug=True, port=5000, host='0.0.0.0')
+```
+
+Without `host='0.0.0.0'`, Docker won't be able to reach Flask!
+
+---
+
+### Troubleshooting Docker
+
+**Problem: Connection refused**
+- **Solution:** Make sure app.py has `host='0.0.0.0'`
+
+**Problem: Port 5000 already in use**
+- **Solution:** Change in docker-compose.yml:
+  ```yaml
+  ports:
+    - "5001:5000"  # Use 5001 instead
+  ```
+
+**Problem: Container won't start**
+- **Solution:** Check logs:
+  ```bash
+  docker-compose logs web
+  ```
+
+**Problem: Need to rebuild**
+- **Solution:**
+  ```bash
+  docker-compose down
+  docker system prune -f
+  docker-compose up --build
+  ```
 
 ---
 
@@ -430,22 +590,22 @@ def add_security_headers(response):
 app2-vulnerable/
 ├── app.py                    # Flask application (all vulnerabilities)
 ├── requirements.txt          # Python dependencies
-├── templates/
-│   ├── base.html            # Base template with header/footer
-│   ├── index.html           # Homepage with product listing
-│   ├── products.html        # All products page
-│   ├── product.html         # Single product (XSS vulnerable)
-│   ├── search.html          # Search results (SQL injection)
-│   ├── cart.html            # Shopping cart (pickle RCE)
-│   ├── checkout.html        # Checkout (logic flaw)
-│   ├── login.html           # Login page
-│   ├── register.html        # Registration page
-│   ├── admin.html           # Admin panel (no auth)
-│   ├── admin_passwords.html # Plaintext passwords
-│   └── admin_secrets.html   # Hardcoded secrets
-├── Dockerfile               # Container definition
-├── docker-compose.yml       # Docker Compose setup
-└── README.md               # This file
+├── Dockerfile                # Container definition
+├── docker-compose.yml        # Docker Compose setup
+├── README.md                 # This file
+└── templates/
+    ├── base.html            # Base template with header/footer
+    ├── index.html           # Homepage with product listing
+    ├── products.html        # All products page
+    ├── product.html         # Single product (XSS vulnerable)
+    ├── search.html          # Search results (SQL injection)
+    ├── cart.html            # Shopping cart (pickle RCE)
+    ├── checkout.html        # Checkout (logic flaw)
+    ├── login.html           # Login page
+    ├── register.html        # Registration page
+    ├── admin.html           # Admin panel (no auth)
+    ├── admin_passwords.html # Plaintext passwords
+    └── admin_secrets.html   # Hardcoded secrets
 ```
 
 ---
@@ -455,7 +615,8 @@ app2-vulnerable/
 - **Backend:** Flask 2.3.2 (Python web framework)
 - **Frontend:** Jinja2 templates, vanilla HTML/CSS
 - **Database:** In-memory (Python lists)
-- **Container:** Docker
+- **Container:** Docker & Docker Compose
+- **Python Version:** 3.11
 
 ---
 
