@@ -763,5 +763,8 @@ If you have questions about any vulnerability:
 Educational use only. Use at your own risk on authorized systems.
 
 ---
+## Screenshots
+<img width="1509" height="796" alt="image" src="https://github.com/user-attachments/assets/579d6ca8-3c89-4632-85ef-4ebaa90da807" />
+
 
 **Happy learning! 🛡️**
