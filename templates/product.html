@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if xss_alert %}
+<div class="alert danger">
+    <h3>🚨 XSS VULNERABILITY DETECTED!</h3>
+    <p><strong>Good catch!</strong> You successfully injected JavaScript!</p>
+    <p><strong>The problem:</strong> Comments are displayed WITHOUT HTML encoding</p>
+    <p><strong>Impact:</strong> Attacker could steal cookies, sessions, redirect users to malicious sites</p>
+    <p><strong>Lesson:</strong> Always escape HTML: use html.escape() or template auto-escaping</p>
+</div>
+{% endif %}
+
+<div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px;">
+    <div style="font-size: 64px; text-align: center; margin-bottom: 20px;">{{ product['image'] }}</div>
+    <h1>{{ product['name'] }}</h1>
+    <p style="font-size: 32px; color: #667eea; font-weight: bold; margin: 20px 0;">${{ product['price'] }}</p>
+    <p>{{ product['description'] }}</p>
+    <p><strong>Category:</strong> {{ product['category'] }}</p>
+    <a href="/add_to_cart/{{ product['id'] }}" class="btn btn-success">Add to Cart</a>
+</div>
+
+<h2>Customer Comments</h2>
+
+{% if comments %}
+<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    {% for comment in comments %}
+    <div style="background: white; padding: 15px; margin-bottom: 15px; border-left: 4px solid #667eea; border-radius: 4px;">
+        <p>{{ comment['text'] }}</p>
+        <small style="color: #666;">— {{ comment['author'] }}</small>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="color: #999;">No comments yet. Be the first!</p>
+{% endif %}
+
+<h3>Add Comment (Try: &lt;img src=x onerror="alert('XSS')"&gt;)</h3>
+<form method="POST" action="/add_comment/{{ product['id'] }}" style="background: white; padding: 20px; border-radius: 8px;">
+    <textarea name="comment" required style="width: 100%; height: 100px;" placeholder="Share your thoughts..."></textarea>
+    <button type="submit" class="btn" style="margin-top: 10px;">Post Comment</button>
+</form>
+
+{% endblock %}

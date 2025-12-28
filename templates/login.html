@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="max-width: 400px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h1>Login</h1>
+    
+    {% if error %}
+    <div class="alert danger">{{ error }}</div>
+    {% endif %}
+    
+    <form method="POST">
+        <div style="margin-bottom: 20px;">
+            <label><strong>Email:</strong></label>
+            <input type="email" name="email" required style="width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label><strong>Password:</strong></label>
+            <input type="password" name="password" required style="width: 100%;">
+        </div>
+        
+        <button type="submit" class="btn" style="width: 100%;">Login</button>
+    </form>
+    
+    <p style="margin-top: 20px; text-align: center;">
+        Don't have an account? <a href="/register">Register here</a>
+    </p>
+    
+    <div style="background: #d4edda; padding: 15px; border-radius: 4px; margin-top: 20px; border-left: 5px solid #28a745;">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>Email: admin@example.com<br>Password: admin123</p>
+        <p style="margin-top: 10px; font-size: 12px;">Or register a new account</p>
+    </div>
+</div>
+
+{% endblock %}

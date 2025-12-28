@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechStore - Premium Electronics{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; color: #333; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 28px; font-weight: bold; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { color: white; text-decoration: none; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 0.8; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .alert { padding: 20px; margin: 20px 0; border-radius: 5px; border-left: 5px solid; }
+        .alert.danger { background: #ffe0e0; border-color: #dc3545; color: #721c24; }
+        .alert.success { background: #d4edda; border-color: #28a745; color: #155724; }
+        .alert.warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+        .alert h3 { margin-bottom: 10px; }
+        .btn { padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.3s; }
+        .btn:hover { background: #764ba2; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #218838; }
+        footer { background: #333; color: white; text-align: center; padding: 20px; margin-top: 50px; }
+        input, textarea, select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: Arial; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">🛒 TechStore</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/cart">🛒 Cart</a></li>
+                    {% if session.get('user') %}
+                        <li><a href="/logout">Logout ({{ session['user'] }})</a></li>
+                        {% if session.get('is_admin') %}
+                            <li><a href="/admin" style="color: #ffeb3b;">⚙️ Admin</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <footer>
+        <p>🚨 Educational Vulnerable Application - Security Demonstration</p>
+    </footer>
+</body>
+</html>

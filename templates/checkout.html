@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if alert %}
+<div class="alert {{ alert['type'] }}">
+    <h3>{{ alert['title'] }}</h3>
+    <p>{{ alert['message'] }}</p>
+    {% if alert.get('explanation') %}
+        <p><strong>Explanation:</strong> {{ alert['explanation'] }}</p>
+        <p><strong>Impact:</strong> {{ alert['impact'] }}</p>
+        <p><strong>Lesson:</strong> {{ alert['lesson'] }}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<h1>Checkout</h1>
+
+<div style="background: white; padding: 30px; border-radius: 8px; max-width: 600px;">
+    <form method="POST">
+        <div style="margin-bottom: 20px;">
+            <label><strong>Product ID:</strong></label>
+            <input type="number" name="product_id" value="1" required style="width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label><strong>Quantity:</strong></label>
+            <input type="number" name="quantity" value="1" required style="width: 100%;">
+        </div>
+        
+        <div style="margin-bottom: 20px; background: #fff3cd; padding: 15px; border-radius: 4px; border-left: 5px solid #ffc107;">
+            <p>💡 <strong>Try setting price to -999999 to see logic flaw!</strong></p>
+            <label><strong>Price (you can change this!):</strong></label>
+            <input type="number" name="price" value="999.99" step="0.01" required style="width: 100%;">
+        </div>
+        
+        <button type="submit" class="btn btn-success" style="width: 100%;">Process Checkout</button>
+    </form>
+</div>
+
+{% endblock %}

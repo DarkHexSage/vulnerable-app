@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if alert %}
+<div class="alert {{ alert['type'] }}">
+    <h3>{{ alert['title'] }}</h3>
+    <p><strong>{{ alert['message'] }}</strong></p>
+    <p><strong>Explanation:</strong> {{ alert['explanation'] }}</p>
+    <p><strong>Impact:</strong> {{ alert['impact'] }}</p>
+    <p><strong>Lesson:</strong> {{ alert['lesson'] }}</p>
+</div>
+{% endif %}
+
+<h1>Search Results for "{{ query }}"</h1>
+
+{% if results %}
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+    {% for product in results %}
+    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <h3>{{ product['name'] }}</h3>
+        <p>{{ product['description'] }}</p>
+        <p style="font-size: 20px; color: #667eea; font-weight: bold;">${{ product['price'] }}</p>
+        <a href="/product/{{ product['id'] }}" class="btn">View Details</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="color: #999; margin-top: 20px;">No products found matching "{{ query }}"</p>
+{% endif %}
+
+<div style="margin-top: 20px; background: #fff3cd; padding: 15px; border-radius: 4px;">
+    <p>💡 <strong>Tip:</strong> Try searching for: <code>' OR '1'='1</code></p>
+</div>
+
+{% endblock %}

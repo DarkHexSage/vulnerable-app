@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 10px; margin-bottom: 40px; text-align: center;">
+    <h1>Welcome to TechStore</h1>
+    <p>Premium Electronics with Premium Vulnerabilities</p>
+    <p style="margin-top: 10px; font-size: 14px; opacity: 0.9;">Educational Security Demonstration</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+    {% for product in products %}
+    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.3s;">
+        <div style="font-size: 48px; text-align: center; margin-bottom: 10px;">{{ product['image'] }}</div>
+        <h3>{{ product['name'] }}</h3>
+        <p style="color: #666; font-size: 14px;">{{ product['description'] }}</p>
+        <p style="font-size: 24px; color: #667eea; font-weight: bold; margin: 10px 0;">${{ product['price'] }}</p>
+        <a href="/product/{{ product['id'] }}" class="btn" style="width: 100%; text-align: center;">View Details</a>
+        <a href="/add_to_cart/{{ product['id'] }}" class="btn btn-success" style="width: 100%; text-align: center; margin-top: 5px;">Add to Cart</a>
+    </div>
+    {% endfor %}
+</div>
+
+<div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 40px; border-left: 5px solid #ffc107;">
+    <h2>🚨 Find These Vulnerabilities:</h2>
+    <ol style="margin-left: 20px;">
+        <li><strong>SQL Injection</strong> - <a href="/search?q=' OR '1'='1">Try the search</a></li>
+        <li><strong>XSS</strong> - Go to any <a href="/product/1">product</a> and add HTML comment</li>
+        <li><strong>Insecure Deserialization</strong> - Add to <a href="/cart">cart</a></li>
+        <li><strong>Hardcoded Secrets</strong> - Check <a href="/admin/show_secrets">/admin/show_secrets</a></li>
+        <li><strong>Missing Authentication</strong> - Visit <a href="/admin">/admin</a> (no login!)</li>
+        <li><strong>Plaintext Passwords</strong> - View <a href="/admin/show_passwords">/admin/show_passwords</a></li>
+        <li><strong>Business Logic Flaw</strong> - Try <a href="/checkout">checkout with price: -999999</a></li>
+        <li><strong>Missing Security Headers</strong> - Open F12 DevTools → Network</li>
+    </ol>
+</div>
+{% endblock %}

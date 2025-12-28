@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if alert %}
+<div class="alert {{ alert['type'] }}">
+    <h3>{{ alert['title'] }}</h3>
+    <p><strong>{{ alert['message'] }}</strong></p>
+    <p><strong>Explanation:</strong> {{ alert['explanation'] }}</p>
+    <p><strong>Impact:</strong> {{ alert['impact'] }}</p>
+    <p><strong>Lesson:</strong> {{ alert['lesson'] }}</p>
+</div>
+{% endif %}
+
+<h1>⚙️ Admin Panel</h1>
+
+<div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+    <h2>Users</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr style="border-bottom: 2px solid #eee;">
+            <th style="text-align: left; padding: 10px;">ID</th>
+            <th style="text-align: left; padding: 10px;">Email</th>
+            <th style="text-align: left; padding: 10px;">Admin</th>
+        </tr>
+        {% for user in users %}
+        <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 10px;">{{ user['id'] }}</td>
+            <td style="padding: 10px;">{{ user['email'] }}</td>
+            <td style="padding: 10px;">{{ 'Yes ✓' if user['is_admin'] else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div style="background: white; padding: 20px; border-radius: 8px;">
+    <a href="/admin/show_passwords" class="btn">View Plaintext Passwords</a>
+    <a href="/admin/show_secrets" class="btn">View Hardcoded Secrets</a>
+</div>
+
+{% endblock %}
