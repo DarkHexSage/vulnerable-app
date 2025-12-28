@@ -747,17 +747,6 @@ Expected: Alert shown, vulnerability detected
 
 ---
 
-## 📞 Questions?
-
-If you have questions about any vulnerability:
-
-1. **Look at the code** - app.py shows exactly how it's vulnerable
-2. **Read the fix** - Each vulnerability includes the solution
-3. **Test it** - Try exploiting it yourself
-4. **Learn why** - Understand the security principle
-
----
-
 ## ⚖️ License
 
 Educational use only. Use at your own risk on authorized systems.
